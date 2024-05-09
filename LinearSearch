@@ -1,0 +1,45 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include <time.h>
+void lsearch(int,int,int[]);
+
+void main()
+{
+    int n;
+    int key;
+    printf("Enter the value of n:\n");
+    scanf("%d",&n);
+    int arr[n];
+    printf("Enter the array values:\n");
+    int j;
+    for(j=0;j<n;j++)
+    scanf("%d",&arr[j]);
+    printf("Enter search value:\n");
+    scanf("%d",&key);
+    lsearch(n,key,arr);
+
+
+
+}
+
+void lsearch(int n, int key, int arr[])
+{
+    for(int i=0;i<n;i++)
+    {
+        if(arr[i]==key)
+        {
+            printf("%d found at position: %d \n",key,i+1);
+            return;
+        }
+    }
+    printf("%d not found.",key);
+}
+
+Output:
+Enter the value of n:
+5
+Enter the array values:
+7 3 4 5 1
+Enter search value:
+5
+5 found at position: 4
