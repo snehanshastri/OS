@@ -1,0 +1,93 @@
+#include<stdio.h>
+int stack[5];
+int size;
+int top=-1;
+
+void push(int n)
+{
+    if(top==size-1)
+    {
+     printf("Stack Full.\n");
+     return;
+    }
+    else
+    {
+    top++;
+    stack[top]=n;
+    }
+}
+
+int pop()
+{
+    if(top==-1)
+    {
+         printf("Stack is empty.\n");
+         return;
+    }
+    else
+    {
+    int v=stack[top];
+    top--;
+    return v;
+    }
+}
+
+void display()
+{
+    if(top==-1)
+    {
+        printf("Stack empty.\n");
+        return;
+    }
+    printf("Stack elements are:\n");
+    for(int i=top;i>=0;i--)
+        printf("%d\t",stack[i]);
+    printf("\n");
+}
+
+void main()
+{
+    printf("Enter no.of elements:\n");
+    scanf("%d",&size);
+    int c;
+    do
+    {
+        printf("Enter your choice \n 1. Push\n 2. Pop\n 3. Display\n 4.Exit\n");
+        scanf("%d",&c);
+        switch(c)
+        {
+        case 1:
+            {
+            int n;
+            printf("Enter input value:\n");
+            scanf("%d",&n);
+            push(n);
+            break;
+            }
+        case 2:
+            {
+            int x=pop();
+            printf("%d has been deleted\n",x);
+            break;
+            }
+        case 3:
+            {
+            display();
+            break;
+            }
+        case 4:
+            {
+            printf("Thank You.\n");
+            break;
+            }
+        default:
+            printf("Invalid value.\n");
+        }
+
+    }while(c!=4);
+
+}
+
+
+Output:
+
