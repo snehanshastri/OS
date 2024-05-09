@@ -90,4 +90,84 @@ void main()
 
 
 Output:
-
+Enter no.of elements:
+5
+Enter your choice
+ 1. Push
+ 2. Pop
+ 3. Display
+ 4.Exit
+1
+Enter input value:
+1
+Enter your choice
+ 1. Push
+ 2. Pop
+ 3. Display
+ 4.Exit
+1
+Enter input value:
+3
+Enter your choice
+ 1. Push
+ 2. Pop
+ 3. Display
+ 4.Exit
+2
+3 has been deleted
+Enter your choice
+ 1. Push
+ 2. Pop
+ 3. Display
+ 4.Exit
+1
+Enter input value:
+4
+Enter your choice
+ 1. Push
+ 2. Pop
+ 3. Display
+ 4.Exit
+1
+Enter input value:
+2
+Enter your choice
+ 1. Push
+ 2. Pop
+ 3. Display
+ 4.Exit
+1
+Enter input value:
+5
+Enter your choice
+ 1. Push
+ 2. Pop
+ 3. Display
+ 4.Exit
+1
+Enter input value:
+6
+Enter your choice
+ 1. Push
+ 2. Pop
+ 3. Display
+ 4.Exit
+1
+Enter input value:
+7
+Stack Full.
+Enter your choice
+ 1. Push
+ 2. Pop
+ 3. Display
+ 4.Exit
+3
+Stack elements are:
+6       5       2       4       1
+Enter your choice
+ 1. Push
+ 2. Pop
+ 3. Display
+ 4.Exit
+4
+Thank You.
