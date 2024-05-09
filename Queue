@@ -1,0 +1,184 @@
+#include<stdio.h>
+int queue[5];
+int front=-1;
+int rear=-1;
+int size;
+
+void enqueue(int);
+int dequeue();
+void display();
+
+void main()
+{
+
+    printf("Enter no.of elements:\n");
+    scanf("%d",&size);
+    int c;
+    do
+    {
+        printf("Enter your choice \n 1. Enqueue\n 2. Dequeue\n 3. Display\n 4.Exit\n");
+        scanf("%d",&c);
+        switch(c)
+        {
+        case 1:
+            {
+            int n;
+            printf("Enter input value:\n");
+            scanf("%d",&n);
+            enqueue(n);
+            break;
+            }
+        case 2:
+            {
+            int x=dequeue();
+            printf("%d has been deleted\n",x);
+            break;
+            }
+        case 3:
+            {
+            display();
+            break;
+            }
+        case 4:
+            {
+            printf("Thank You.\n");
+            break;
+            }
+        default:
+            printf("Invalid value.\n");
+        }
+
+    }while(c!=4);
+
+}
+
+void enqueue(int n)
+{
+    if(rear==size-1)
+    {
+        printf("Queue full.\n");
+        return;
+    }
+    else if(front==-1 && rear==-1)
+    {
+        front=rear=0;
+        queue[rear]=n;
+    }
+    else
+    {
+        rear++;
+        queue[rear]=n;
+    }
+}
+
+int dequeue()
+{
+    int x;
+    if(front==-1)
+    {
+        printf("Queue empty.\n");
+        return;
+    }
+    else if(front==rear)
+        {
+            x=queue[front];
+            front++;
+        }
+        else
+        {
+            x=queue[front];
+            front++;
+        }
+}
+
+void display()
+{
+    if(front==-1)
+    {
+        printf("Queue is empty.\n");
+        return;
+    }
+    else
+    {
+        printf("Queue elements are:\n");
+        for(int i=front;i<=rear;i++)
+            printf("%d\t",queue[i]);
+        printf("\n");
+    }
+
+}
+
+Output:
+Enter no.of elements:
+5
+Enter your choice
+ 1. Enqueue
+ 2. Dequeue
+ 3. Display
+ 4.Exit
+1
+Enter input value:
+1
+Enter your choice
+ 1. Enqueue
+ 2. Dequeue
+ 3. Display
+ 4.Exit
+1
+Enter input value:
+3
+Enter your choice
+ 1. Enqueue
+ 2. Dequeue
+ 3. Display
+ 4.Exit
+2
+1 has been deleted
+Enter your choice
+ 1. Enqueue
+ 2. Dequeue
+ 3. Display
+ 4.Exit
+1
+Enter input value:
+4
+Enter your choice
+ 1. Enqueue
+ 2. Dequeue
+ 3. Display
+ 4.Exit
+1
+Enter input value:
+5
+Enter your choice
+ 1. Enqueue
+ 2. Dequeue
+ 3. Display
+ 4.Exit
+1
+Enter input value:
+6
+Enter your choice
+ 1. Enqueue
+ 2. Dequeue
+ 3. Display
+ 4.Exit
+1
+Enter input value:
+7
+Queue full.
+Enter your choice
+ 1. Enqueue
+ 2. Dequeue
+ 3. Display
+ 4.Exit
+3
+Queue elements are:
+3       4       5       6
+Enter your choice
+ 1. Enqueue
+ 2. Dequeue
+ 3. Display
+ 4.Exit
+ 4
+Thank You.
