@@ -1,0 +1,73 @@
+#include<stdio.h>
+int at[10];
+int bt[10];
+int pt[10];
+
+void fcfs(int);
+
+void main()
+{
+    int n;
+    printf("Enter no.of processes:\n");
+    scanf("%d",&n);
+
+    for(int i=0;i<n;i++)
+    {
+        printf("Enter the type of process: 1 for System Process and 2 for User Process\n");
+        scanf("%d",&pt[i]);
+        printf("Enter arrival time for process %d:",(i+1));
+        scanf("%d",&at[i]);
+        printf("Enter burst time for process %d:",(i+1));
+        scanf("%d",&bt[i]);
+    }
+    fcfs(n);
+}
+
+void fcfs(int size) {
+    int wt[size], tat[size];
+    int remaining_time[size];
+    int current_time = 0;
+    int completed = 0;
+
+
+    for (int i = 0; i < size; i++) {
+        remaining_time[i] = bt[i];
+    }
+
+    printf("Process\tArrival Time\tBurst Time\tPriority\tFinish Time\tTurnaround Time\tWaiting Time\n");
+    while (completed < size) {
+        int selected = -1;
+        int highest_priority = 9999;
+        for (int i = 0; i < size; i++) {
+            if (at[i] <= current_time && remaining_time[i] > 0 && pt[i] < highest_priority) {
+                selected = i;
+                highest_priority = pt[i];
+            }
+        }
+        if (selected == -1) {
+            current_time++;
+        } else {
+            remaining_time[selected]--;
+            current_time++;
+            if (remaining_time[selected] == 0) {
+                completed++;
+                int finish_time = current_time;
+                int turnaround_time = finish_time - at[selected];
+                int waiting_time = turnaround_time - bt[selected];
+                printf("P%d\t%d\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\n",(selected+1), at[selected], bt[selected], pt[selected], finish_time, turnaround_time, waiting_time);
+                wt[selected] = waiting_time;
+                tat[selected] = turnaround_time;
+            }
+
+        }
+
+    }
+     int sumw=0,sumt=0;
+            for(int i=0;i<size;i++)
+            {
+                sumw=sumw+wt[i];
+                sumt=sumt+tat[i];
+            }
+            printf("Average turnaround time:%f\n",((float)sumt/size));
+             printf("Average waiting time:%f\n",((float)sumw/size));
+}
