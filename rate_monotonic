@@ -1,0 +1,104 @@
+#include<stdio.h>
+#include<math.h>
+
+#define MAX_PROCESSES 10
+
+int c[MAX_PROCESSES]; // execution time
+int t[MAX_PROCESSES]; // time period
+int n; // number of processes
+
+void rate_monotonic() {
+    int i, j, temp;
+
+    // sort processes based on their time period
+    for(i = 0; i < n; i++) {
+        for(j = i + 1; j < n; j++) {
+            if(t[i] > t[j]) {
+                temp = t[i];
+                t[i] = t[j];
+                t[j] = temp;
+
+                temp = c[i];
+                c[i] = c[j];
+                c[j] = temp;
+            } else if(t[i] == t[j]) {
+                if(c[i] > c[j]) {
+                    temp = t[i];
+                    t[i] = t[j];
+                    t[j] = temp;
+
+                    temp = c[i];
+                    c[i] = c[j];
+                    c[j] = temp;
+                }
+            }
+        }
+    }
+
+    // print the schedule
+    printf("Rate Monotonic Schedule:\n");
+    printf("Process\tExecution Time\tPeriod\n");
+    for(i = 0; i < n; i++) {
+        printf("P%d\t%d\t\t%d\n", i + 1, c[i], t[i]);
+    }
+
+    // print the Gantt chart
+    printf("\nGantt Chart:\n");
+    printf("Time\t");
+    for(i = 0; i < n; i++) {
+        printf("P%d\t", i + 1);
+    }
+    printf("\n");
+    int time = 0;
+    for(i = 0; i < n; i++) {
+        printf("%d\t", time);
+        for(int j = 0; j < c[i]; j++) {
+            printf("P%d\t", i + 1);
+        }
+        time += c[i];
+        printf("\n");
+    }
+}
+
+int main() {
+    printf("Enter the number of processes:\n");
+    scanf("%d", &n);
+
+    printf("Enter the execution time and time period for each process:\n");
+    for(int i = 0; i < n; i++) {
+        printf("Enter the execution time and time period for process %d:\n", i + 1);
+        scanf("%d %d", &c[i], &t[i]);
+    }
+
+    float s = 0;
+    for(int i = 0; i < n; i++) {
+        s += (float)c[i] / t[i];
+    }
+
+    float x = n * (pow(2, (1.0 / n)) - 1);
+    if(s <= x) {
+        rate_monotonic();
+    } else {
+        printf("The system is not schedulable using Rate Monotonic Scheduling.\n");
+    }
+
+    return 0;
+}
+
+//Output:
+
+Enter the number of processes:
+3
+Enter the execution time and time period for each process:
+Enter the execution time and time period for process 1:
+3 20
+Enter the execution time and time period for process 2:
+2 5
+Enter the execution time and time period for process 3:
+2 10
+Rate Monotonic Schedule:
+Process Execution Time  Period
+P1      3               20
+P2      2               5
+P3      2               10
+
