@@ -1,0 +1,113 @@
+#include <stdio.h>
+
+#define MAX_PROCESSES 10
+
+typedef struct {
+    int capacity;
+    int period;
+    int deadline;
+} Process;
+
+void edf(Process processes[], int n);
+
+int main() {
+    int n;
+    printf("Enter the number of processes:\n");
+    scanf("%d", &n);
+
+    Process processes[MAX_PROCESSES];
+
+    printf("Enter the execution time, period, and deadline for each process:\n");
+    for(int i = 0; i < n; i++) {
+        printf("Enter the capacity, period, and deadline for process %d:\n", i + 1);
+        scanf("%d %d %d", &processes[i].capacity, &processes[i].period, &processes[i].deadline);
+    }
+
+    edf(processes, n);
+
+    return 0;
+}
+
+void edf(Process processes[], int n) {
+    int time = 0;
+    int remaining[MAX_PROCESSES];
+    int executed[MAX_PROCESSES];
+    int completion_time[MAX_PROCESSES];
+
+    for (int i = 0; i < n; i++) {
+        remaining[i] = processes[i].capacity;
+        executed[i] = 0;
+    }
+
+    while (1) {
+        int min_deadline = __INT_MAX__;
+        int next_process = -1;
+
+        // Find the process with the earliest deadline
+        for (int i = 0; i < n; i++) {
+            if (!executed[i] && processes[i].deadline < min_deadline && time % processes[i].period == 0 && remaining[i] > 0) {
+                min_deadline = processes[i].deadline;
+                next_process = i;
+            }
+        }
+
+        if (next_process == -1)
+            break; // No more processes to execute
+
+        // Execute the next process
+        printf("Executing process %d at time %d\n", next_process + 1, time);
+        remaining[next_process]--;
+        time++;
+
+        // Check if the process has finished executing
+        if (remaining[next_process] == 0) {
+            executed[next_process] = 1;
+            completion_time[next_process] = time;
+        }
+    }
+
+    // Print completion time for each process
+    printf("\nCompletion times:\n");
+    for (int i = 0; i < n; i++) {
+        printf("Process %d completed at time %d\n", i + 1, completion_time[i]);
+    }
+}
+
+
+//Output:
+
+Enter the number of processes:
+3
+Enter the execution time, period, and deadline for each process:
+Enter the capacity, period, and deadline for process 1:
+3 20 7
+Enter the capacity, period, and deadline for process 2:
+2 5 4
+Enter the capacity, period, and deadline for process 3:
+2 10 8
+Executing process 2 at time 0
+Executing process 1 at time 1
+Executing process 2 at time 2
+Executing process 1 at time 3
+Executing process 3 at time 4
+Executing process 1 at time 5
+Executing process 2 at time 6
+Executing process 1 at time 7
+Executing process 1 at time 8
+Executing process 1 at time 9
+Executing process 1 at time 10
+Executing process 3 at time 11
+Executing process 1 at time 12
+Executing process 1 at time 13
+Executing process 2 at time 14
+Executing process 1 at time 15
+Executing process 1 at time 16
+Executing process 1 at time 17
+Executing process 1 at time 18
+Executing process 1 at time 19
+Executing process 3 at time 20
+
+Completion times:
+Process 1 completed at time 20
+Process 2 completed at time 14
+Process 3 completed at time 20
