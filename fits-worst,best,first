@@ -1,0 +1,84 @@
+#include<stdio.h>
+
+void sort(int a[], int n) {
+    for(int i=0; i<n-1; i++) {
+        for(int j=0; j<n-1-i; j++) {
+            if(a[j] < a[j+1]) {
+                int t = a[j];
+                a[j] = a[j+1];
+                a[j+1] = t;
+            }
+        }
+    }
+}
+
+int main() {
+    int avail[10];
+    int p[10];
+    int n;
+    int m;
+    printf("Enter no of memory spaces:\n");
+    scanf("%d",&m);
+    printf("Enter no.of processes:\n");
+    scanf("%d",&n);
+
+    printf("Enter available memory blocks:\n");
+    for(int i=0; i<m; i++) {
+        scanf("%d",&avail[i]);
+    }
+
+    printf("Enter processes :\n");
+    for(int i=0; i<n; i++) {
+        scanf("%d",&p[i]);
+    }
+
+    printf("First Fit:\n");
+    int alloc[10] = {0}; // initialize with 0 to mark unallocated
+    for(int i=0; i<n; i++) {
+        for(int j=0; j<m; j++) {
+            if(p[i] <= avail[j] && alloc[j] == 0) {
+                printf("P%d allocated to block M%d\n", i, j);
+                alloc[j] = 1; // mark as allocated
+                break;
+            }
+        }
+    }
+
+    printf("Best Fit:\n");
+    int alloc2[10] = {0}; // initialize with 0 to mark unallocated
+    for(int i=0; i<n; i++) {
+        int min_idx = -1;
+        int min_diff = 9999;
+        for(int j=0; j<m; j++) {
+            if(p[i] <= avail[j] && (avail[j]-p[i]) < min_diff && alloc2[j] == 0) {
+                min_diff = avail[j]-p[i];
+                min_idx = j;
+            }
+        }
+        if(min_idx != -1) {
+            printf("P%d allocated to block M%d\n", i, min_idx);
+            alloc2[min_idx] = 1; // mark as allocated
+        }
+    }
+
+    printf("Worst Fit:\n");
+int alloc3[10] = {0}; // initialize with 0 to mark unallocated
+for(int i=0; i<n; i++) {
+    int max_idx = -1;
+    int max_avail = 0;
+    for(int j=0; j<m; j++) {
+        if(avail[j] > max_avail && alloc3[j] == 0) {
+            max_avail = avail[j];
+            max_idx = j;
+        }
+    }
+    if(max_idx != -1 && p[i] <= max_avail) {
+        printf("P%d allocated to block M%d\n", i, max_idx);
+        alloc3[max_idx] = 1; // mark as allocated
+    } else {
+        printf("P%d not allocated\n", i);
+    }
+}
+
+    return 0;
+}
