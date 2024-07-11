@@ -1,0 +1,162 @@
+#include <stdio.h>
+#include <stdlib.h>  // For dynamic memory allocation
+
+int *ip;  // Array to hold input values
+
+void fifo(int n, int frame_size) {
+    int *frames = (int *) malloc(frame_size * sizeof(int));
+    int page_faults = 0;
+    int page_hits = 0;
+    int frame_index = 0;
+
+    for (int i = 0; i < frame_size; i++) {
+        frames[i] = -1;  // Initialize all frames to -1 (indicating empty)
+    }
+
+    for (int i = 0; i < n; i++) {
+        int page = ip[i];
+        int found = 0;
+
+        // Check if page is already in frames
+        for (int j = 0; j < frame_size; j++) {
+            if (frames[j] == page) {
+                found = 1;
+                page_hits++;
+                break;
+            }
+        }
+
+        if (!found) {
+            frames[frame_index] = page;
+            frame_index = (frame_index + 1) % frame_size;
+            page_faults++;
+        }
+    }
+
+    free(frames);  // Free dynamically allocated memory
+    printf("FIFO: Page hits = %d, Page faults = %d\n", page_hits, page_faults);
+}
+
+void optimal(int n, int frame_size) {
+    int *frames = (int *) malloc(frame_size * sizeof(int));
+    int page_faults = 0;
+    int page_hits = 0;
+    int *index = (int *) malloc(frame_size * sizeof(int));
+
+    for (int i = 0; i < frame_size; i++) {
+        frames[i] = -1;  // Initialize all frames to -1 (indicating empty)
+        index[i] = -1;   // Initialize future references to -1
+    }
+
+    for (int i = 0; i < n; i++) {
+        int page = ip[i];
+        int found = 0;
+
+        // Check if page is already in frames
+        for (int j = 0; j < frame_size; j++) {
+            if (frames[j] == page) {
+                found = 1;
+                page_hits++;
+                break;
+            }
+        }
+
+        if (!found) {
+            int replace_index = 0;
+            int farthest = i;
+            for (int j = 0; j < frame_size; j++) {
+                int k;
+                for (k = i; k < n; k++) {
+                    if (frames[j] == ip[k]) {
+                        if (k > farthest) {
+                            farthest = k;
+                            replace_index = j;
+                        }
+                        break;
+                    }
+                }
+                if (k == n) {
+                    replace_index = j;
+                    break;
+                }
+            }
+
+            frames[replace_index] = page;
+            page_faults++;
+        }
+    }
+
+    free(frames);  // Free dynamically allocated memory
+    free(index);
+    printf("Optimal: Page hits = %d, Page faults = %d\n", page_hits, page_faults);
+}
+
+void lru(int n, int frame_size) {
+    int *frames = (int *) malloc(frame_size * sizeof(int));
+    int page_faults = 0;
+    int page_hits = 0;
+    int *counter = (int *) malloc(frame_size * sizeof(int));
+
+    for (int i = 0; i < frame_size; i++) {
+        frames[i] = -1;  // Initialize all frames to -1 (indicating empty)
+        counter[i] = 0;  // Initialize counters for LRU
+    }
+
+    for (int i = 0; i < n; i++) {
+        int page = ip[i];
+        int found = 0;
+
+        // Check if page is already in frames
+        for (int j = 0; j < frame_size; j++) {
+            if (frames[j] == page) {
+                found = 1;
+                page_hits++;
+                counter[j] = i;  // Update counter for LRU
+                break;
+            }
+        }
+
+        if (!found) {
+            int replace_index = 0;
+            int least_used = counter[0];
+
+            for (int j = 1; j < frame_size; j++) {
+                if (counter[j] < least_used) {
+                    least_used = counter[j];
+                    replace_index = j;
+                }
+            }
+
+            frames[replace_index] = page;
+            counter[replace_index] = i;  // Update counter for LRU
+            page_faults++;
+        }
+    }
+
+    free(frames);  // Free dynamically allocated memory
+    free(counter);
+    printf("LRU: Page hits = %d, Page faults = %d\n", page_hits, page_faults);
+}
+
+int main() {
+    int n, page_table_size;
+    printf("Enter no.of values to be added to stack frame:\n");
+    scanf("%d", &n);
+    printf("Enter the input values to be placed on the stack frame:\n");
+
+    ip = (int *) malloc(n * sizeof(int));
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &ip[i]);
+    }
+
+    printf("Enter the page table size (number of frames):\n");
+    scanf("%d", &page_table_size);
+
+    fifo(n, page_table_size);
+    optimal(n, page_table_size);
+    lru(n, page_table_size);
+
+    free(ip);  // Free dynamically allocated memory for input values
+
+    return 0;
+}
