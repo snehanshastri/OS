@@ -62,7 +62,7 @@ void detect_deadlock() {
             if (!finish[i]) {
                 int can_allocate = 1;
                 for (j = 0; j < n_resources; j++) {
-                    if (max_need[i][j] - allocation[i][j] > work[j]) {
+                    if (max_need[i][j] > work[j]) {
                         can_allocate = 0;
                         break;
                     }
